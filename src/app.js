@@ -39,6 +39,7 @@ function renderStudents(students) {
 }
 
 
+
 formEl.addEventListener("submit", (e) => {
         e.preventDefault()
         const data = {
@@ -49,8 +50,7 @@ formEl.addEventListener("submit", (e) => {
             email : e.currentTarget.elements.email.value,
             isEnrolled : e.currentTarget.elements.isEnrolled.checked
         }
-        console.log(data);
-        
+        addStudent(data).then(() => getStudents()).then(res => renderStudents(res))
         formEl.reset()
 })
 
@@ -58,10 +58,16 @@ formEl.addEventListener("submit", (e) => {
 // Функція для додавання нового студента
 
 function addStudent(e) {
-    
+  const options = {
+    method: "POST",
+    body: JSON.stringify(e),
+    headers: {
+      "Content-Type": "application/json; charset=UTF-8",
+    },
+  };
+  return fetch("http://localhost:3000/students",options)
+  .then(res => res.json());
 }
-
-
 
 // Функція для оновлення студента
 
